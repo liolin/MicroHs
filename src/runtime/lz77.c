@@ -72,7 +72,9 @@ lz77d(uint8_t *src, size_t srclen, uint8_t **bufp)
   return outoffs;
 }
 
+#ifndef HASHBITS
 #define HASHBITS 11
+#endif
 #define HASHSIZE (1 << HASHBITS)
 typedef size_t lzhash_t;
 static INLINE lzhash_t

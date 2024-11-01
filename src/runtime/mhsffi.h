@@ -1,3 +1,5 @@
+#ifndef MHSFFI_H
+#define MHSFFI_H
 #include <inttypes.h>
 #include <stdlib.h>
 #include <time.h>
@@ -77,3 +79,5 @@ time_t             mhs_to_CTime(intptr_t, int); /* XXX wrong */
 // ssize_t            mhs_to_CSSize(intptr_t, int);
 intptr_t           mhs_to_CIntPtr(intptr_t, int);
 uintptr_t          mhs_to_CUIntPtr(intptr_t, int);
+
+#endif /* MHSFFI_H */
