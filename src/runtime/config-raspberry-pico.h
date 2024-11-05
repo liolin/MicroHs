@@ -87,14 +87,14 @@
 
 #define F_CPU 16000000UL
 
-#include <stdio.h>
 #include "pico/stdlib.h"
+#include <stdio.h>
 
 // Turn the led on or off
 void pico_set_led(bool led_on) {
 #if defined(PICO_DEFAULT_LED_PIN)
-    // Just set the GPIO on or off
-    gpio_put(PICO_DEFAULT_LED_PIN, led_on);
+  // Just set the GPIO on or off
+  gpio_put(PICO_DEFAULT_LED_PIN, led_on);
 #endif
 }
 
@@ -102,10 +102,11 @@ void pico_set_led(bool led_on) {
 void main_setup(void) {
   stdio_init_all();
 #ifdef PICO_DEFAULT_LED_PIN
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+  gpio_init(PICO_DEFAULT_LED_PIN);
+  gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 #endif
-  for(int i = 0; i < 50; i++) {
+  for (int i = 0; i < 10; i++) {
+    printf("Starting\n");
     pico_set_led(true);
     sleep_ms(100);
     pico_set_led(false);
@@ -121,10 +122,7 @@ void set_led(int on) {
   }
 }
 
-void delay_ms(int ms) {
-  sleep_ms(ms);
-}
-/* void delay_ms(int ms) { _delay_ms(ms); } */
+void delay_ms(int ms) { sleep_ms(ms); }
 
 void myexit(int n) {
   while (true) {
@@ -136,15 +134,6 @@ void myexit(int n) {
   }
 }
 #define EXIT myexit
-
-/* int ffs(uintptr_t x) { */
-/*   if (!x) */
-/*     return 0; */
-/*   x &= -x;          /\* keep lowest bit *\/ */
-/*   int i = __CLZ(x); /\* count leading 0s *\/ */
-/*   return 32 - i;    /\* 31 leading zeros should return 1 *\/ */
-/* } */
-/* #define FFS ffs */
 
 #define FFI_EXTRA                                                              \
   {"set_led", (funptr_t)set_led, FFI_IIV},                                     \
