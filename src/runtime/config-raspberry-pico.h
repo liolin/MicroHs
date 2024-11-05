@@ -87,6 +87,7 @@
 
 #define F_CPU 16000000UL
 
+#include <stdio.h>
 #include "pico/stdlib.h"
 
 // Turn the led on or off
@@ -94,29 +95,46 @@ void pico_set_led(bool led_on) {
 #if defined(PICO_DEFAULT_LED_PIN)
     // Just set the GPIO on or off
     gpio_put(PICO_DEFAULT_LED_PIN, led_on);
-#elif defined(CYW43_WL_GPIO_LED_PIN)
-    // Ask the wifi "driver" to set the GPIO on or off
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
 #endif
 }
 
 #define INITIALIZATION
 void main_setup(void) {
+  stdio_init_all();
+#ifdef PICO_DEFAULT_LED_PIN
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+#endif
+  for(int i = 0; i < 50; i++) {
+    pico_set_led(true);
+    sleep_ms(100);
+    pico_set_led(false);
+    sleep_ms(100);
+  }
 }
 
 void set_led(int on) {
-  pico_set_led(true);
+  if (on == 0) {
+    pico_set_led(false);
+  } else {
+    pico_set_led(true);
+  }
 }
 
 void delay_ms(int ms) {
-  sleep_ms(250);
+  sleep_ms(ms);
 }
 /* void delay_ms(int ms) { _delay_ms(ms); } */
 
-/* Instead of exit()ing, flash the green LED on exit code 0 else the red */
-void myexit(int n) { set_led(n == 0 ? 0 : 1); }
+void myexit(int n) {
+  while (true) {
+    pico_set_led(true);
+    sleep_ms(250);
+    pico_set_led(false);
+    sleep_ms(250);
+    printf("Finished\n");
+  }
+}
 #define EXIT myexit
 
 /* int ffs(uintptr_t x) { */
